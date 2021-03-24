@@ -1,0 +1,126 @@
+  
+.background-img{
+    width: 100%;
+    background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ), url("../images/main/aleks-dorohovich-nJdwUHmaY8A-unsplash.jpg") ;
+}
+
+
+/************************
+LOGIN SECTION (login and registration)
+*************************/
+.login-height{
+    height: 100vh;
+}
+
+.login-form{
+    margin-top: 25vh;
+    margin-left: 25%;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;  
+    width: 50%;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+/************************
+HOMEPAGE
+*************************/
+.homepage-main-container{
+    margin: 0 auto; 
+    margin-top: 30px; 
+    background-color: #f7f7f7; 
+    border-radius: 10px;
+}
+
+.homepage-nav-profile-image{
+    width: 50px;
+}
+
+
+.homepage-card-container{
+    border: 1px solid silver; 
+    border-radius: 10px; 
+    margin: 0 auto;
+}
+
+.homepage-card-body{
+    padding: 10px 0;
+}
+
+.homepage-card-cover{
+    width: 150px; 
+    height:212px; 
+    margin-top: 13px;
+}
+
+.homepage-card-description{
+    text-align: justify; 
+    text-justify: inter-word;
+}
+
+.homepage-footer{
+    border-radius: 0;
+}
+
+/************************
+ADMIN SECTION
+*************************/
+.admin-section-page-size{
+    height: 100%;
+}
+
+.admin-section-sidebar{
+left: 0;
+padding: 10px;
+}
+
+.admin-section-btn-item{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 40px;
+}
+
+.admin-section-btn-exit{
+    margin-top: 30px;
+    border-radius: 40px;
+}
+
+.admin-section-common{
+    border: 1px solid silver; 
+    background-color: white;
+    margin: 0 auto;
+}
+
+.admin-section-right-container{
+    background-color: #f7f7f7;
+}
+
+
+.admin-section-common-card-body{
+    padding: 10px 0;
+}
+
+.admin-section-dashboard-add-container{
+    border: 1px solid silver; 
+    border-radius: 10px; 
+    margin: 0 auto; 
+    background-color: #007bff;
+}
+
+.admin-section-dashboard-manage-container{
+    border: 1px solid silver; 
+    border-radius: 10px; 
+    margin: 0 auto; 
+    background-color: #20c997;
+}
+
+.admin-section-table-row-cover{
+    height: 60px; 
+    width: 50px;
+}
+
+.admin-section-table-row-hover-delete{
+    cursor: pointer;
+}
