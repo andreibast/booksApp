@@ -8,7 +8,7 @@
             
 
             
-            <?php  require_once(__DIR__.'/../../Http/Controllers/users/RegisterUser.php');  ?>
+            <?php  require_once(__DIR__.'/../controller/users/RegisterUser.php');  ?>
            
             <?php
 
@@ -25,7 +25,7 @@
 
                 <?php endif ?>
               
-            <form action="../../Http/Controllers/users/RegisterUser.php" method="POST" >
+            <form action="../controller/users/RegisterUser.php" method="POST" >
                 <div class="form-group">
                     <input type="text" class="form-control" name="new_surname" placeholder="Surname" >
                 </div>
@@ -45,7 +45,7 @@
                 <button type="submit" name="new_user" class="btn btn-danger mb-4 col-md-12">Create new account</button>
             </form>
 
-            <label><a href="../../">Go Back To Login Page</a></label>
+            <label><a href="../">Go Back To Login Page</a></label>
         </div>
     </div>
 

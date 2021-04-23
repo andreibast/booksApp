@@ -1,4 +1,4 @@
-<?php require_once '../../../Http/Controllers/admin/DeleteBook.php';  ?>
+<?php require_once '../../controller/Book.php';  ?>
 
 <style>
 
@@ -27,7 +27,6 @@
             <?php 
                 echo $_SESSION['message'];
                 unset($_SESSION['message']);
-            
             ?>
         </div>
 
@@ -47,40 +46,36 @@
     </thead>
     <tbody>
 
-
         <?php 
-        $conn = mysqli_connect("localhost","root","","books.app"); 
-        $result = mysqli_query($conn,"select * from books");
+        
+        $obj = new Book();
+        
+        foreach($obj->displayBooks() as $book){ ?>
 
-        while($user_row = mysqli_fetch_row($result)) {  ?>
-
-                <?php
+            <?php
                 $givenPicturePath;
-                    if(strcmp($user_row[4], '150x212.png') == 0){
-                        $givenPicturePath = "../../../public/images/";
-                    }else{
-                        $givenPicturePath = '../../../public/images/user_books_covers/';
-                    }
-                ?>
+                if(strcmp($book['picture'], '150x212.png') == 0){
+                    $givenPicturePath = "../../public/images/";
+                }else{
+                    $givenPicturePath = '../../public/images/user_books_covers/';
+                }
+            ?>
             
             <tr>
-                <td scope="row"><?php echo $user_row[0];  ?></td>
-                <td> <a href="<?php echo $givenPicturePath . $user_row[4]; ?>"><img src="<?php echo $givenPicturePath . $user_row[4]; ?>" class="admin-section-table-row-cover"></a></td>
-                <td><?php echo $user_row[1]; ?></td>
-                <td><?php echo $user_row[2]; ?></td>
-                <td><?php echo $user_row[3]; ?></td>
+                <td scope="row"><?php echo $book['id'];  ?></td>
+                <td> <a href="<?php echo $givenPicturePath . $book['picture']; ?>"><img src="<?php echo $givenPicturePath . $book['picture']; ?>" class="admin-section-table-row-cover"></a></td>
+                <td><?php echo $book['title']; ?></td>
+                <td><?php echo $book['authors']; ?></td>
+                <td><?php echo $book['category']; ?></td>
 
-                
-            
-
-                <td><a href="../../../resources/views/adminarea/admin.php?admin_edit=<?php echo $user_row[0]; ?>"><i class="far fa-edit"></i></a>  </td>
+                <td><a href="../../view/adminarea/admin.php?admin_edit=<?php echo $book['id']; ?>"><i class="far fa-edit"></i></a>  </td>
                 
                 <td >
-                    <a data-id="<?php echo $user_row[0]; ?>"   data-link ="<?php echo "../" . $user_row[4]; ?>" onclick="getLink(this); confirmDelete(this);" class="admin-section-table-row-hover-delete"><i class="far fa-trash-alt text-danger"></i></a>
+                    <a data-id="<?php echo $book['id']; ?>"   data-link ="<?php echo "../" . $book['picture']; ?>" onclick="getLink(this); confirmDelete(this);" class="admin-section-table-row-hover-delete"><i class="far fa-trash-alt text-danger"></i></a>
 
                 </td>
             </tr>
-        <?php  }  ?>
+        <?php unset($obj); }  ?>
         
         <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -94,14 +89,11 @@
 
                     <div class="modal-body">
                         Are you sure you want to delete this book?
-                        <form action="../../../Http/Controllers/admin/DeleteBook.php" id="form-delete-user" method="POST">
+                        <form action="../../controller/Book.php" id="form-delete-user" method="POST">
                             <input type="hidden" name="picturePath" class="col-md-2">
                             <input type="hidden" name="id" class="col-md-2">
                         </form>
-
-
                     </div>
-
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -125,7 +117,6 @@
             }
             
         </script>
-        <?php  mysqli_close($conn); ?>
     </tbody>
 </table>
 

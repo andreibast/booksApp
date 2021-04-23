@@ -8,8 +8,8 @@
 
 </head>
 <body>
-    <?php include("resources/views/layout.css.php"); ?>
-    <?php include("resources/views/login.php"); ?>
-    <?php include("resources/views/layout.js.php"); ?>
+    <?php include("view/layout.css.php"); ?>
+    <?php include("view/login.php"); ?>
+    <?php include("view/layout.js.php"); ?>
 </body>
 </html>

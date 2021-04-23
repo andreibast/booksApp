@@ -1,6 +1,6 @@
 <?php 
 //========================SESSION SECTION=============================
-    require_once(__DIR__.'/../../../Http/Models/Users.php');
+    require_once(__DIR__.'/../../model/Users.php');
 
     $registerUser = new Users();
     $registerUser->sessionStart(0, '/', 'localhost', false, false);

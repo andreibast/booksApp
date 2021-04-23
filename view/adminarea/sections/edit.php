@@ -8,7 +8,7 @@
             <div class="card-body text-center admin-section-common-card-body">
             
             
-            <?php  require_once '../../../Http/Controllers/admin/EditBook.php' ?>
+            <?php  require_once '../../controller/Book.php' ?>
 
 
             <?php if(isset($_SESSION['message'])): ?>
@@ -19,9 +19,21 @@
                     ?>
                 </div>
             <?php endif ?>
+            
+            <?php
+                $editBook = new Book();
+                $editBook->editBookTarget();
+                $givenPicturePath1 = '';
 
+                if(strcmp($editBook->picture, '150x212.jpg') == 1){
+                    $givenPicturePath1 = "../../public/images/";
+                }else{
+                    $givenPicturePath1 = "../../public/images/user_books_covers/";
+                }
+
+            ?>
                
-            <form  action="../../../Http/Controllers/admin/EditBook.php" method="POST" enctype="multipart/form-data"  >
+            <form  action="../../controller/Book.php" method="POST" enctype="multipart/form-data"  >
                 <input type="hidden" name="id" value="<?php echo $editBook->id; ?>">
                 <div class="form-group">
                     <label >Modify Book Title</label>
@@ -33,7 +45,7 @@
                 </div>
                 <div class="form-group">
                     <b>Current Assigned Cover Picture</b><br>
-                    <a href="<?php echo $givenPicturePath . $editBook->picture; ?>"><img src="<?php echo $givenPicturePath . $editBook->picture; ?>" style="height: 212px; width:150px;" ></a>
+                    <a href="<?php echo $givenPicturePath1 . $editBook->picture; ?>"><img src="<?php echo $givenPicturePath1 . $editBook->picture; ?>" style="height: 212px; width:150px;" ></a>
                 </div>
 
 
@@ -61,3 +73,6 @@
         </div>
         
     </div>
+
+
+    <?php   unset($editBook);  ?>

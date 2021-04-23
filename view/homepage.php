@@ -2,7 +2,8 @@
 <div class="background-img img-fluid">
 
     <!-- NAVBAR -->
-    <?php  require_once(__DIR__.'/../../Http/Controllers/users/LoginUser.php');  ?>
+    <?php  require_once(__DIR__.'/../controller/User.php');  ?>
+    <?php require_once '../controller/Book.php';  ?>
 
     <?php
     $current_user_name="Guest";
@@ -22,10 +23,8 @@
         }
     ?>
 
-
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a href="#"><img class= "logo" src="../../public/images/main/bffb7a55-1455-4a54-9b5a-028fb7e9f17a_200x200.png"></a>
+        <a href="#"><img class= "logo" src="../public/images/main/bffb7a55-1455-4a54-9b5a-028fb7e9f17a_200x200.png"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -50,7 +49,7 @@
 
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="text-center">
-                                <img src="../../public/images/main/profile_default_image.jpg" class="rounded-circle homepage-nav-profile-image">
+                                <img src="../public/images/main/profile_default_image.jpg" class="rounded-circle homepage-nav-profile-image">
                                 Welcome, <?php echo  $current_user_name;  ?>
                             </div>
                         </a>
@@ -59,7 +58,7 @@
                         <a class="dropdown-item disabled" href="#" disabled>Favorite books</a>
                         <a class="dropdown-item disabled" href="#">Edit Profile</a>
                         <div class="dropdown-divider"></div>
-                        <form action="../../Http/Controllers/users/LoginUser.php" method ="POST" >
+                        <form action="../controller/User.php" method ="POST" >
                             <button type="submit" name="user_logout" class="dropdown-item">Logout</button>
                         </form>
 
@@ -77,17 +76,15 @@
 
         <!-- Individual card-->
         <?php 
-        $conn = mysqli_connect("localhost","root","","books.app"); //database.php
-        $result = mysqli_query($conn,"select * from books");
+                $obj = new Book();    
+                foreach($obj->displayBooks() as $book){  ?>
 
-        while($user_row = mysqli_fetch_row($result)) {  ?>
-
-<?php
+        <?php
                 $givenPicturePath;
-                    if(strcmp($user_row[4], '150x212.png') == 0){
-                        $givenPicturePath = "../../public/images/";
+                    if(strcmp($book['picture'], '150x212.png') == 0){
+                        $givenPicturePath = "../public/images/";
                     }else{
-                        $givenPicturePath = '../../public/images/user_books_covers/';
+                        $givenPicturePath = '../public/images/user_books_covers/';
                     }
                 ?>
                     
@@ -98,14 +95,14 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-3">
-                                <img src="<?php echo $givenPicturePath . $user_row[4]; ?>"  class="homepage-card-cover"> 
+                                <img src="<?php echo $givenPicturePath . $book['picture']; ?>"  class="homepage-card-cover"> 
                             </div>
                             <div class="col-md-8 ml-3">
-                                    <h2 class="card-title"><?php echo $user_row[1];  ?></h2>
-                                    <h5 class="card-title"><?php echo $user_row[2];  ?></h5>
-                                    <h6 class="card-title" ><?php echo $user_row[3];  ?></h6>
+                                    <h2 class="card-title"><?php echo $book['title'];  ?></h2>
+                                    <h5 class="card-title"><?php echo $book['authors'];  ?></h5>
+                                    <h6 class="card-title" ><?php echo $book['category'];  ?></h6>
 
-                                <p class="card-text" class="homepage-card-description"><?php echo $user_row[5];  ?></p>
+                                <p class="card-text" class="homepage-card-description"><?php echo $book['description'];  ?></p>
                             </div>
                         </div>
                     </div>
@@ -114,7 +111,7 @@
         </div>
 
 
-        <?php  }  ?>
+        <?php unset($obj); }  ?>
 
     </div>
 

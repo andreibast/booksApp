@@ -8,7 +8,7 @@
         <div class="card col-md-11 mt-3 mb-2 p-5 admin-section-common"  >
             <div class="card-body text-center admin-section-common-card-body">
            
-                <?php  require_once __DIR__.'/../../../../Http/Controllers/admin/AddBook.php' ?>
+                <?php  require_once __DIR__.'/../../../controller/Book.php' ?>
             
                 <?php
 
@@ -18,13 +18,23 @@
                         <?php 
                             echo $_SESSION['message'];
                             unset($_SESSION['message']);
-
                         ?>
                     </div>
                 <?php endif ?>
 
-   
-                <form  action="../../../Http/Controllers/admin/AddBook.php" method="POST" enctype="multipart/form-data" >
+                <?php
+
+                    $obj1 = new Book();
+
+
+                    if(isset($_POST['add_book']) ){
+                        $obj1->addBook();
+                    }
+                    
+                    unset($obj1);
+                ?>
+
+                <form  action="../../controller/Book.php" method="POST" enctype="multipart/form-data" >
                     <div class="form-group">
                         <label >Add Book Title</label>
                         <input type="text" class="form-control"  name="add_title" placeholder="Add Book Title">

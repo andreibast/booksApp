@@ -5,7 +5,7 @@
     <div class="login-form">
         <h1 class="mb-4">Please Login</h1>
 
-        <?php  require_once(__DIR__.'/../../Http/Controllers/users/LoginUser.php');  ?>
+        <?php  require_once(__DIR__.'/../controller/User.php');  ?>
         
         <?php
 
@@ -20,11 +20,11 @@
                     ?>
                 </div>
 
-            <?php endif ?>
+        <?php endif ?>
 
 
 
-        <form action="Http/Controllers/users/LoginUser.php" method="POST" >
+        <form action="controller/User.php" method="POST" >
             <div class="form-group">
                 <input type="email" name="login_email" class="form-control" placeholder="Email address" required> 
             </div>
@@ -36,11 +36,11 @@
             <button type="submit" name="login_user" class="btn btn-primary mb-4 col-md-12" >Login</button>
         </form>
         
-        <a class="text-warning" href="resources/views/homepage.php">Enter as guest</a></label><br>
+        <a class="text-warning" href="view/homepage.php">Enter as guest</a></label><br>
 
         
 
-        <label class="form-check-label" for="exampleCheck1">Don't have an account? <a href="resources/views/registration.php">Signup Now</a></label>
+        <label class="form-check-label" for="exampleCheck1">Don't have an account? <a href="view/registration.php">Signup Now</a></label>
         <label class="form-check-label" for="exampleCheck1">Don't have an account? 
     </div>
     </div>
