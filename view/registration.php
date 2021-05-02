@@ -5,27 +5,22 @@
         <div class="login-form">
             <h1 class="mb-4">Registration Form</h1>
             
-            
-
-            
-            <?php  require_once(__DIR__.'/../controller/users/RegisterUser.php');  ?>
+            <?php  require_once(__DIR__.'/../controller/User.php');  ?>
            
             <?php
-
                 if(isset($_SESSION['message_register'])): ?>
-
                     <div class="alert alert-<?= $_SESSION['msg_type_register'] ?>">
                         <?php 
                             echo $_SESSION['message_register'];
                             unset($_SESSION['message_register']);
                             unset($_SESSION['key']);
-                            session_destroy();
+                            //session_destroy();
                         ?>
                     </div>
-
-                <?php endif ?>
+            <?php endif ?>
+            
               
-            <form action="../controller/users/RegisterUser.php" method="POST" >
+            <form action="../controller/User.php" method="POST" >
                 <div class="form-group">
                     <input type="text" class="form-control" name="new_surname" placeholder="Surname" >
                 </div>
@@ -33,10 +28,10 @@
                     <input type="email" class="form-control" name="new_email" placeholder="Email address" >
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control"  name="new_password" placeholder="Enter Password" required>
+                    <input type="password" class="form-control"  name="new_password" placeholder="Enter Password">
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" name="new_password_check" placeholder="Repeat Password" required>
+                    <input type="password" class="form-control" name="new_password_check" placeholder="Repeat Password">
                 </div>
 
                 <input type="hidden" name="token" value="<?php echo $csrf; ?>">

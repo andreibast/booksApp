@@ -1,6 +1,10 @@
 <?php include("../layout.css.php"); ?>
 
-    <?php  require_once(__DIR__.'/../../controller/users/LoginUser.php');  ?>
+    <?php  //require_once __DIR__.'/../../controller/users/User.php';  ?>
+
+    <?php  require_once '../../controller/User.php';  ?>
+
+
     <?php
     $current_user_name="Guest";
 

@@ -1,5 +1,5 @@
 <?php
-    require_once __DIR__.'/users/LoginUser.php'; //uses the same session
+    require_once __DIR__.'/../controller/User.php'; //uses the same session
     require_once __DIR__.'/../model/Books.php'; //to have the object
 
 class Book extends Books{

@@ -1,7 +1,7 @@
 <?php include("layout.css.php"); ?>
 <div class="background-img img-fluid">
 
-    <!-- NAVBAR -->
+    
     <?php  require_once(__DIR__.'/../controller/User.php');  ?>
     <?php require_once '../controller/Book.php';  ?>
 
@@ -22,7 +22,7 @@
             $for_admin = "<p class= 'alert alert-danger'>Please log in first!<p>";
         }
     ?>
-
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a href="#"><img class= "logo" src="../public/images/main/bffb7a55-1455-4a54-9b5a-028fb7e9f17a_200x200.png"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,6 +57,8 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item disabled" href="#" disabled>Favorite books</a>
                         <a class="dropdown-item disabled" href="#">Edit Profile</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="../view/registration.php">Create New User</a>
                         <div class="dropdown-divider"></div>
                         <form action="../controller/User.php" method ="POST" >
                             <button type="submit" name="user_logout" class="dropdown-item">Logout</button>

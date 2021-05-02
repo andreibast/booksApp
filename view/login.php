@@ -23,25 +23,24 @@
         <?php endif ?>
 
 
-
         <form action="controller/User.php" method="POST" >
             <div class="form-group">
-                <input type="email" name="login_email" class="form-control" placeholder="Email address" required> 
+                <input type="email" name="login_email" class="form-control" placeholder="Email address" > 
             </div>
             <div class="form-group">
-                <input type="password" name="login_password" class="form-control"  placeholder="Password" required>
+                <input type="password" name="login_password" class="form-control"  placeholder="Password" >
             </div>
             <input type="hidden" name="token_login" value="<?php echo $csrf_login; ?>">
 
             <button type="submit" name="login_user" class="btn btn-primary mb-4 col-md-12" >Login</button>
         </form>
         
-        <a class="text-warning" href="view/homepage.php">Enter as guest</a></label><br>
-
+        <a class="btn btn-warning" href="view/homepage.php">Enter as guest</a></label>
+        <br><br>
+        <a class="text-primary text-left" href="view/registration.php">Signup Now</a> <br>
+        <a class="text-danger text-right" href="view/recover.php">Recover Password</a>
         
-
-        <label class="form-check-label" for="exampleCheck1">Don't have an account? <a href="view/registration.php">Signup Now</a></label>
-        <label class="form-check-label" for="exampleCheck1">Don't have an account? 
+        <!-- <label class="form-check-label" for="exampleCheck1">Don't have an account?  -->
     </div>
     </div>
 </div>
