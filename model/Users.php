@@ -1,5 +1,4 @@
 <?php
-
 include 'interfaces/ConnectionData.php';
 require_once __DIR__.'/../lib/Database.php';
 
@@ -21,7 +20,6 @@ class Users extends Database implements ConnectionData{
         }
     }
 
-
     public function verifyUser($userEmail, $userPass){
         try{
             $openConn = parent::openConnection();
@@ -32,6 +30,7 @@ class Users extends Database implements ConnectionData{
 
             if (password_verify($userPass, $user["parola"])){
                 $_SESSION['curent_username'] = $user["prenume"];
+                $_SESSION['curent_user_id'] = $user["id"];
                 return true;
             } else {
                 return false;
@@ -42,7 +41,6 @@ class Users extends Database implements ConnectionData{
         }
         parent::closeConnection($openConn);
     }
-
 
     public function verifyUserDuplicate($userEmail){
         try{
@@ -57,17 +55,11 @@ class Users extends Database implements ConnectionData{
             } else {
                 return false;
             }
-
         }catch(PDOException $e){
             echo $e->getMessage();
         }
         parent::closeConnection($openConn);
     }
-
-
-
-
-
 
     public function registerUser($prenume, $email, $parola){
         try{

@@ -81,7 +81,6 @@ class Book extends Books{
         header("location: $url");
     }
 
-
     public function deleteBook(){
         $id = $_POST['id'];
         
@@ -106,6 +105,34 @@ class Book extends Books{
         return $books = parent::getAllBooks();
     }
 
+    public function displayCategories(){
+        return $categories = parent::getAllCategories();
+    }
+
+    public function displaySearchedBooks($searchKey){
+        return $searchedBooks = parent::getSearchedBooks($searchKey);
+    }
+
+    public function displayFilteredBooks($booksFiltered){
+        return $booksFiltered = parent::getFilteredBooks($booksFiltered);
+    }
+
+    public function addToFavorites($current_user_id, $current_book_id){
+            parent::insertNewFavorite($current_user_id, $current_book_id);
+    }
+
+    public function checkFavorite($current_user_id, $current_book_id){
+        return parent::checkDuplicateFavorite($current_user_id, $current_book_id);
+    }
+
+
+    public function displayFavoriteBooks($current_user_id){
+        return $favoriteBooks = parent::getUserFavorites($current_user_id);
+    }
+
+    public function deleteFavoriteBook($current_del_book){
+        parent::deleteUserFavorite($current_del_book);
+    }
 }
 
 $obj = new Book();

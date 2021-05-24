@@ -3,7 +3,6 @@ require_once __DIR__.'/../model/Users.php'; //to have the object
 
 class User extends Users{
 
-
     public function sessionStart($lifetime, $path, $domain, $secure, $httpOnly){
         session_set_cookie_params($lifetime, $path, $domain, $secure, $httpOnly);
         session_start();
@@ -30,7 +29,6 @@ class User extends Users{
         }
     }
 
-    
     public function login($csrf_login_method){
         $email_grabbed =  trim(htmlspecialchars($_POST['login_email']));
         $password_grabbed = trim(htmlspecialchars($_POST['login_password']));
@@ -62,7 +60,6 @@ class User extends Users{
             header("location: ../");
         }
     }
-
 
     public function register_token(){
         $_SESSION['id'] = 326;
@@ -171,7 +168,3 @@ if(isset($_POST['new_user'])){
 }
 
 unset($registerUser); //destroy the object from memory
-
-
-
-

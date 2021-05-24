@@ -71,8 +71,6 @@ class Books extends Database{
         parent::closeConnection($openConn);
     }
 
-
-
     public function updateBookValues($passedId, $passedPictureName){
         try{
             $openConn = parent::openConnection();
@@ -98,7 +96,6 @@ class Books extends Database{
     public function getFetchedFileName(){
         return $this->fetchedFileName;
     }
-
 
     public function deleteSelectedBook($passedId){
         try{
@@ -137,4 +134,144 @@ class Books extends Database{
         parent::closeConnection($openConn);
     }
 
+    public function getAllCategories(){
+        try{
+            $openConn = parent::openConnection();
+
+            $selectCategories = $openConn->query("SELECT DISTINCT category FROM books");
+
+            $categories = array();
+
+            while($row = $selectCategories->fetch(PDO::FETCH_ASSOC)){
+                $categories[] = $row;
+            }
+
+            return $categories;
+
+
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        parent::closeConnection($openConn);
+    }
+
+    public function getSearchedBooks($searchKey){
+        try{
+            $openConn = parent::openConnection();
+
+            $searchBooks = $openConn->query("SELECT * FROM books WHERE title LIKE '%$searchKey%'");
+
+            $searched_books = array();
+
+            while($row = $searchBooks->fetch(PDO::FETCH_ASSOC)){
+                $searched_books[] = $row;
+            }
+
+            return $searched_books;
+
+
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        parent::closeConnection($openConn);
+    }
+
+    public function insertNewFavorite($current_user_id, $current_book_id){
+
+        try{
+            $openConn = parent::openConnection();
+
+            $sql = "INSERT INTO favorites (id_user, id_book) VALUES($current_user_id, $current_book_id)";
+            $statement = $openConn->prepare($sql);
+                $statement->execute();
+
+        }catch(PDOException $e){
+            echo $sql . "<br>" . $e->getMessage();
+        }
+        parent::closeConnection($openConn);
+        
+    }
+
+    public function checkDuplicateFavorite($current_user_id, $current_book_id){
+        try{
+            $openConn = parent::openConnection();
+
+            $sql_verif = "SELECT * FROM favorites WHERE id_user = '$current_user_id' AND id_book = '$current_book_id'";
+            $statement_ver = $openConn->prepare($sql_verif);
+            $statement_ver->execute();
+
+            if($statement_ver->rowCount() > 0){
+                return false;
+            }else{
+                return true;
+            }
+            
+        }catch(PDOException $e){
+            echo $sql . "<br>" . $e->getMessage();
+        }
+        parent::closeConnection($openConn);
+    }
+
+    public function getFilteredBooks($booksFiltered){
+        try{
+            $openConn = parent::openConnection();
+            $booksFilteredSanitized = trim($booksFiltered);
+
+            $searchFilteredBooks = $openConn->query("SELECT * FROM books WHERE category ='$booksFilteredSanitized'");
+
+            $filtered_books = array();
+
+            while($row = $searchFilteredBooks->fetch(PDO::FETCH_ASSOC)){
+                $filtered_books[] = $row;
+            }
+            return $filtered_books;
+
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        parent::closeConnection($openConn);
+    }
+
+    public function getUserFavorites($current_user_id){
+
+        try{
+            $openConn = parent::openConnection();
+
+            $searchFavoriteBooks = $openConn->query("SELECT books.id, title, authors, category, picture, description, favorites.id_user, favorites.id_book
+            FROM books, favorites 
+            WHERE 
+                favorites.id_user = $current_user_id 
+                AND favorites.id_book = books.id
+            ");
+
+            $user_favorite_books = array();
+
+            while($row = $searchFavoriteBooks->fetch(PDO::FETCH_ASSOC)){
+                $user_favorite_books[] = $row;
+            }
+
+            return $user_favorite_books;
+
+
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        parent::closeConnection($openConn);
+
+    }
+
+    public function deleteUserFavorite($current_del_book){
+        try{
+            $openConn = parent::openConnection();
+    
+            $sql1 = "DELETE FROM favorites WHERE id_book =$current_del_book";
+            
+            $openConn->exec($sql1);
+    
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+
+        parent::closeConnection($openConn);
+    }
 }
