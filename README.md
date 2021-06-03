@@ -1,3 +1,3 @@
 # booksApp
 
-The project is finished under the MVC branch
+The project is continued under the MVC branch
