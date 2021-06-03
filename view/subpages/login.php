@@ -5,7 +5,7 @@
         <div class="login-form">
             <h1 class="mb-4">Please Login</h1>
 
-            <?php  require_once(__DIR__.'/../controller/User.php');  ?>
+            <?php  require_once(__DIR__.'/../../controller/User.php');  ?>
             
             <?php
                 if(isset($_SESSION['message_login'])): ?>
@@ -20,7 +20,7 @@
                     </div>
             <?php endif ?>
 
-            <form action="controller/User.php" method="POST" >
+            <form action="" method="POST" >
                 <div class="form-group">
                     <input type="email" name="login_email" class="form-control" placeholder="Email address" > 
                 </div>
@@ -33,7 +33,7 @@
             </form>
             
             <a class="btn btn-warning" href="view/homepage.php">Enter as guest</a></label><br><br>
-            <a class="text-primary text-left" href="view/registration.php">Signup Now</a> <br>
+            <a class="text-primary text-left" href="view/subpages/registration.php">Signup Now</a> <br>
         </div>
     </div>
 </div>

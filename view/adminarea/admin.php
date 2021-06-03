@@ -1,4 +1,4 @@
-<?php include("../layout.css.php"); ?>
+<?php include("../templates/layout.css.php"); ?>
 <?php  require_once '../../controller/User.php';  ?>
 <?php
     $current_user_name="Guest";
@@ -41,4 +41,4 @@
 
     </div>
 </div>
-<?php include("../layout.js.php"); ?>
+<?php include("../templates/layout.js.php"); ?>

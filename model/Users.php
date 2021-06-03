@@ -1,20 +1,27 @@
 <?php
-include 'interfaces/ConnectionData.php';
-require_once __DIR__.'/../lib/Database.php';
+// include 'interfaces/ConnectionData.php';
+// require_once __DIR__.'/../lib/Database.php';
 
-class Users extends Database implements ConnectionData{
+class Users{
 
-    public function __construct($user_domain = self::USER_DOMAIN, $user_name = self::USER_NAME, $user_password = self::USER_PASSWORD, $user_database = self::USER_DATABASE){
-        $this->user_domain = $user_domain;
-        $this->user_name = $user_name;
-        $this->user_password = $user_password;
-        $this->user_database = $user_database;
+    // public function __construct($user_domain = self::USER_DOMAIN, $user_name = self::USER_NAME, $user_password = self::USER_PASSWORD, $user_database = self::USER_DATABASE){
+    //     $this->user_domain = $user_domain;
+    //     $this->user_name = $user_name;
+    //     $this->user_password = $user_password;
+    //     $this->user_database = $user_database;
+    // }
+    
+    protected $db;
+
+    public function __construct($database){
+        $this->db = $database;
     }
+
 
     public function openConnection(){
   
         try{
-            return parent::openConnection();
+            return $this->db->openConnection();
         }catch(PDOException $e){
             echo $sql . "<br>" . $e->getMessage();
         }
@@ -22,7 +29,7 @@ class Users extends Database implements ConnectionData{
 
     public function verifyUser($userEmail, $userPass){
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
 
             $stmt = $openConn->prepare("SELECT * FROM users WHERE email = '".$userEmail."'");
             $stmt->execute();
@@ -39,12 +46,12 @@ class Users extends Database implements ConnectionData{
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
     }
 
     public function verifyUserDuplicate($userEmail){
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
 
             $stmt = $openConn->prepare("SELECT * FROM users WHERE email = '".$userEmail."'");
             $stmt->execute();
@@ -58,12 +65,12 @@ class Users extends Database implements ConnectionData{
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
     }
 
     public function registerUser($prenume, $email, $parola){
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
 
             $stmt = $openConn->prepare("INSERT INTO users (id, prenume, email, parola) VALUES(NULL,'".$prenume."','".$email."','".$parola."') ");
 
@@ -76,6 +83,6 @@ class Users extends Database implements ConnectionData{
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
     }
 }

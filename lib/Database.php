@@ -1,5 +1,4 @@
 <?php
-
 class Database{
 
     protected $host = 'localhost';

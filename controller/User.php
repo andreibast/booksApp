@@ -1,7 +1,12 @@
 <?php
-require_once __DIR__.'/../model/Users.php'; //to have the object
 
-class User extends Users{
+class User{
+
+    protected $model = '';
+
+    public function __construct($model){
+        $this->model = $model;
+    }
 
     public function sessionStart($lifetime, $path, $domain, $secure, $httpOnly){
         session_set_cookie_params($lifetime, $path, $domain, $secure, $httpOnly);
@@ -24,7 +29,7 @@ class User extends Users{
                 unset( $_SESSION['key_login']);
                 unset( $_SESSION['expire_login']);
 
-                header("location: ../../view/login.php"); //redirect to login page after session expiration
+                header("location: http://localhost/books.andreibasturescu/"); //redirect to login page after session expiration
             }
         }
     }
@@ -36,28 +41,25 @@ class User extends Users{
         if(isset($_POST['login_email']) && isset($_POST['login_password']) ){
     
             if(hash_equals($csrf_login_method, $_POST['token_login'])){
-
                     if(empty($email_grabbed) || empty($password_grabbed)){
                         $_SESSION['message_login'] = "Please complete all the fields!";
                         $_SESSION['msg_type_login'] = "danger";
-                        header("location: ../");
-                    }elseif(parent::verifyUser($_POST['login_email'], $password_grabbed) == true){
-                        $_SESSION['msg_type_login'] = "success"; 
-                        header("location: ../view/homepage.php");
+                    }elseif($this->model->verifyUser($_POST['login_email'], $password_grabbed) == true){
+                        $_SESSION['msg_type_login'] = "success";
+                        require __DIR__."/../view/homepage.php";
+                        header("Location: http://localhost/books.andreibasturescu/index.php/home");
+                        // header("location: view/homepage.php");
                     }else{
                         $_SESSION['message_login'] = "Incorrect email/password!";
                         $_SESSION['msg_type_login'] = "danger";
-                        header("location: ../");
                     }
             }else{
                 $_SESSION['message_login'] = "The token has expired! Please refrish the page and try again!";
                 $_SESSION['msg_type_login'] = "warning";
-                header("location: ../");
             }
         }else{
             $_SESSION['message_login'] = "Please complete all the fields!";
             $_SESSION['msg_type_login'] = "danger";
-            header("location: ../");
         }
     }
 
@@ -95,10 +97,10 @@ class User extends Users{
         
                 if(strcmp($_POST['new_password'], $_POST['new_password_check']) == 0){
         
-                    if(parent::verifyUserDuplicate($new_email_address) == true){
+                    if($this->model->verifyUserDuplicate($new_email_address) == true){
                         $_SESSION['message_register'] = "There is already an account with the given email address!";
                         $_SESSION['msg_type_register'] = "warning";
-                    }elseif(parent::registerUser($new_prenume, $new_email_address, $new_password) == true){
+                    }elseif($this->model->registerUser($new_prenume, $new_email_address, $new_password) == true){
                         $_SESSION['message_register'] = "The new username has been created!";
                         $_SESSION['msg_type_register'] = "success";
                     }else{
@@ -137,34 +139,34 @@ class User extends Users{
 //========================================================================
 //LOGIN USER
 //========================SESSION SECTION=================================
-$loginUser = new User();  
-$loginUser->sessionStart(0, '/', 'localhost', false, false);
-$loginUser->login_token();
+// $loginUser = new User();  
+// $loginUser->sessionStart(0, '/', 'localhost', false, false);
+// $loginUser->login_token();
 
-$csrf_login = hash_hmac('sha256','This is LoginUser.php', $_SESSION['key_login']);
+// $csrf_login = hash_hmac('sha256','This is LoginUser.php', $_SESSION['key_login']);
 
 //========================INTERACTION SECTION=============================
-if(isset($_POST['login_user'])){   
-    $loginUser->login($csrf_login);
-}
+// if(isset($_POST['login_user'])){   
+//     $loginUser->login($csrf_login);
+// }
 
-if(isset($_POST['user_logout'])){
-    $loginUser->logout();
-}
-unset($loginUser); //destroy the object from memory
+// if(isset($_POST['user_logout'])){
+//     $loginUser->logout();
+// }
+// unset($loginUser); //destroy the object from memory
 
 
 //====================================================================
 //REGISTER USER
 //========================SESSION SECTION=============================
-$registerUser = new User();
-$registerUser->register_token();
+// $registerUser = new User();
+// $registerUser->register_token();
 
-$csrf = hash_hmac('sha256','This is RegisterUser.php', $_SESSION['key']);
+// $csrf = hash_hmac('sha256','This is RegisterUser.php', $_SESSION['key']);
 
 //========================INTERACTION SECTION=========================
-if(isset($_POST['new_user'])){
-    $registerUser->register($csrf);
-}
+// if(isset($_POST['new_user'])){
+//     $registerUser->register($csrf);
+// }
 
-unset($registerUser); //destroy the object from memory
+// unset($registerUser); //destroy the object from memory

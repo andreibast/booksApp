@@ -1,8 +1,11 @@
 <?php
-    require_once __DIR__.'/../controller/User.php'; //uses the same session
-    require_once __DIR__.'/../model/Books.php'; //to have the object
+class Book{
 
-class Book extends Books{
+    private $model = '';
+
+    public function __construct($model){
+        $this->model = $model;
+    }
 
     public $defaultPictureName = '150x212.png';
     private const USER_PIC_PATH = "C:/xampp/htdocs/books.andreibasturescu/public/images/user_books_covers/";
@@ -24,7 +27,7 @@ class Book extends Books{
                 $alert_add_color = 'warning';
             }
         
-            parent::insertNewBook($this->pictureName);
+            $this->model->insertNewBook($this->pictureName);
 
         }else{
             $picture_message = "The book was not submitted! Add at least a title with 3 characters long and a cover picture that has .jpg or .jpeg extension!";
@@ -40,7 +43,7 @@ class Book extends Books{
     public function editBookTarget(){
         if(isset($_REQUEST['admin_edit']) ){
             $this->id = $_REQUEST['admin_edit'];
-            parent::getBookValues($this->id);
+            $this->model->getBookValues($this->id);
         }
     }
 
@@ -53,7 +56,7 @@ class Book extends Books{
             $updatePath = '../public/images/user_books_covers/' . basename($_FILES['edit_picture']['name']);
             $moveUploaded = move_uploaded_file($_FILES['edit_picture']['tmp_name'], $updatePath);
             $this->pictureName = basename($_FILES['edit_picture']['name']);
-            $picDbName = parent::getBookPictureLink($this->id);
+            $picDbName = $this->model->getBookPictureLink($this->id);
 
             if ($moveUploaded) {
                 $this->tempFileName =  $this->pictureName;
@@ -70,7 +73,7 @@ class Book extends Books{
             }
         }
 
-        parent::updateBookValues($this->id, $this->tempFileName);
+        $this->model->updateBookValues($this->id, $this->tempFileName);
 
         $_SESSION['message'] = "The book has been updated!" .  $this->picture_message;
         $_SESSION['msg_type'] = $this->alert_update_color;
@@ -93,7 +96,7 @@ class Book extends Books{
             unlink($exploded_path_string);
         }
 
-        parent::deleteSelectedBook($id);
+        $this->model->deleteSelectedBook($id);
 
         $_SESSION['message'] = "The book has been deleted!";
         $_SESSION['msg_type'] = "danger";
@@ -102,52 +105,51 @@ class Book extends Books{
     }
 
     public function displayBooks(){
-        return $books = parent::getAllBooks();
+        return $books = $this->model->getAllBooks();
     }
 
     public function displayCategories(){
-        return $categories = parent::getAllCategories();
+        return $categories = $this->model->getAllCategories();
     }
 
     public function displaySearchedBooks($searchKey){
-        return $searchedBooks = parent::getSearchedBooks($searchKey);
+        return $searchedBooks = $this->model->getSearchedBooks($searchKey);
     }
 
     public function displayFilteredBooks($booksFiltered){
-        return $booksFiltered = parent::getFilteredBooks($booksFiltered);
+        return $booksFiltered = $this->model->getFilteredBooks($booksFiltered);
     }
 
     public function addToFavorites($current_user_id, $current_book_id){
-            parent::insertNewFavorite($current_user_id, $current_book_id);
+        $this->model->insertNewFavorite($current_user_id, $current_book_id);
     }
 
     public function checkFavorite($current_user_id, $current_book_id){
-        return parent::checkDuplicateFavorite($current_user_id, $current_book_id);
+        return $this->model->checkDuplicateFavorite($current_user_id, $current_book_id);
     }
 
-
     public function displayFavoriteBooks($current_user_id){
-        return $favoriteBooks = parent::getUserFavorites($current_user_id);
+        return $favoriteBooks = $this->model->getUserFavorites($current_user_id);
     }
 
     public function deleteFavoriteBook($current_del_book){
-        parent::deleteUserFavorite($current_del_book);
+        $this->model->deleteUserFavorite($current_del_book);
     }
 }
 
-$obj = new Book();
+// $obj = new Book();
 
-if(isset($_POST['add_book'])){
-    $obj->addBook();
-}
+// if(isset($_POST['add_book'])){
+//     $obj->addBook();
+// }
 
-if(isset($_POST['edit_book']) ){
-    $obj->editBookTarget();
-    $obj->editBook();
-}
+// if(isset($_POST['edit_book']) ){
+//     $obj->editBookTarget();
+//     $obj->editBook();
+// }
 
-if(isset($_POST['delete'])){
-    $obj->deleteBook();
-}
+// if(isset($_POST['delete'])){
+//     $obj->deleteBook();
+// }
 
-unset($obj);
+// unset($obj);

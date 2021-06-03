@@ -1,15 +1,20 @@
 <?php
-require_once __DIR__.'/../lib/Database.php';
 
-class Books extends Database{
+class Books{
 
     public $defaultPictureName = '150x212.png';
     public $tempFileName = '';
 
+    protected $db;
+
+    public function __construct($database){
+        $this->db = $database;
+    }
+
     public function insertNewBook($passedLink){
 
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
             $sql = "INSERT INTO books (id, title, authors, category, picture, description) VALUES(NULL, :title, :authors, :category, :picture, :description)";
 
             $statement = $openConn->prepare($sql);
@@ -25,14 +30,14 @@ class Books extends Database{
         }catch(PDOException $e){
             echo $sql . "<br>" . $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
         
     }
 
     public function getBookValues($id){     
         try{
 
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
 
             $sql = $openConn->prepare("SELECT * FROM books WHERE id= $id");
             $sql->execute();
@@ -48,13 +53,13 @@ class Books extends Database{
         }catch(PDOException $e){
             echo "Error: " . $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
     }
 
 
     public function getBookPictureLink($id){
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
 
             $sql1 = $openConn->prepare("SELECT * FROM books WHERE id=$id");
             $sql1->execute();
@@ -68,12 +73,12 @@ class Books extends Database{
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
     }
 
     public function updateBookValues($passedId, $passedPictureName){
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
 
             $sql = "UPDATE books SET title=:title, authors=:authors, category=:category, picture=:picture, description=:description WHERE id=$passedId";
 
@@ -90,7 +95,7 @@ class Books extends Database{
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
     }
 
     public function getFetchedFileName(){
@@ -99,7 +104,7 @@ class Books extends Database{
 
     public function deleteSelectedBook($passedId){
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
     
             $sql1 = "DELETE FROM books WHERE id= $passedId";
             $sql2 = "ALTER TABLE books AUTO_INCREMENT=1";
@@ -111,12 +116,12 @@ class Books extends Database{
             echo $e->getMessage();
         }
 
-        parent::closeConnection($openConn);
+        $this->model->closeConnection($openConn);
     }
 
     public function getAllBooks(){
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
 
             $selectBooks = $openConn->query('SELECT * FROM books');
             
@@ -131,12 +136,12 @@ class Books extends Database{
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
     }
 
     public function getAllCategories(){
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
 
             $selectCategories = $openConn->query("SELECT DISTINCT category FROM books");
 
@@ -152,12 +157,12 @@ class Books extends Database{
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
     }
 
     public function getSearchedBooks($searchKey){
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
 
             $searchBooks = $openConn->query("SELECT * FROM books WHERE title LIKE '%$searchKey%'");
 
@@ -173,13 +178,13 @@ class Books extends Database{
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
     }
 
     public function insertNewFavorite($current_user_id, $current_book_id){
 
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
 
             $sql = "INSERT INTO favorites (id_user, id_book) VALUES($current_user_id, $current_book_id)";
             $statement = $openConn->prepare($sql);
@@ -188,13 +193,13 @@ class Books extends Database{
         }catch(PDOException $e){
             echo $sql . "<br>" . $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
         
     }
 
     public function checkDuplicateFavorite($current_user_id, $current_book_id){
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
 
             $sql_verif = "SELECT * FROM favorites WHERE id_user = '$current_user_id' AND id_book = '$current_book_id'";
             $statement_ver = $openConn->prepare($sql_verif);
@@ -209,12 +214,12 @@ class Books extends Database{
         }catch(PDOException $e){
             echo $sql . "<br>" . $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
     }
 
     public function getFilteredBooks($booksFiltered){
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
             $booksFilteredSanitized = trim($booksFiltered);
 
             $searchFilteredBooks = $openConn->query("SELECT * FROM books WHERE category ='$booksFilteredSanitized'");
@@ -229,13 +234,13 @@ class Books extends Database{
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
     }
 
     public function getUserFavorites($current_user_id){
 
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
 
             $searchFavoriteBooks = $openConn->query("SELECT books.id, title, authors, category, picture, description, favorites.id_user, favorites.id_book
             FROM books, favorites 
@@ -256,13 +261,13 @@ class Books extends Database{
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
 
     }
 
     public function deleteUserFavorite($current_del_book){
         try{
-            $openConn = parent::openConnection();
+            $openConn = $this->db->openConnection();
     
             $sql1 = "DELETE FROM favorites WHERE id_book =$current_del_book";
             
@@ -272,6 +277,6 @@ class Books extends Database{
             echo $e->getMessage();
         }
 
-        parent::closeConnection($openConn);
+        $this->db->closeConnection($openConn);
     }
 }
