@@ -1,22 +1,13 @@
 <?php
-// include 'interfaces/ConnectionData.php';
-// require_once __DIR__.'/../lib/Database.php';
 
 class Users{
 
-    // public function __construct($user_domain = self::USER_DOMAIN, $user_name = self::USER_NAME, $user_password = self::USER_PASSWORD, $user_database = self::USER_DATABASE){
-    //     $this->user_domain = $user_domain;
-    //     $this->user_name = $user_name;
-    //     $this->user_password = $user_password;
-    //     $this->user_database = $user_database;
-    // }
-    
     protected $db;
 
     public function __construct($database){
         $this->db = $database;
     }
-
+    
 
     public function openConnection(){
   
@@ -26,6 +17,7 @@ class Users{
             echo $sql . "<br>" . $e->getMessage();
         }
     }
+
 
     public function verifyUser($userEmail, $userPass){
         try{
@@ -43,11 +35,13 @@ class Users{
                 return false;
             }
 
+            $this->db->closeConnection($openConn);
+
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        $this->db->closeConnection($openConn);
     }
+
 
     public function verifyUserDuplicate($userEmail){
         try{
@@ -62,10 +56,11 @@ class Users{
             } else {
                 return false;
             }
+            $this->db->closeConnection($openConn);
+
         }catch(PDOException $e){
             echo $e->getMessage();
-        }
-        $this->db->closeConnection($openConn);
+        }  
     }
 
     public function registerUser($prenume, $email, $parola){
@@ -80,9 +75,11 @@ class Users{
                 return false;
             }
 
+            $this->db->closeConnection($openConn);
+
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        $this->db->closeConnection($openConn);
     }
+
 }

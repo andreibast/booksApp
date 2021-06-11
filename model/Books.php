@@ -27,10 +27,12 @@ class Books{
 
             $statement->execute();
 
+            $this->db->closeConnection($openConn);
+
         }catch(PDOException $e){
             echo $sql . "<br>" . $e->getMessage();
         }
-        $this->db->closeConnection($openConn);
+
         
     }
 
@@ -49,11 +51,12 @@ class Books{
             $this->picture = $this->row[0]['picture'];
             $this->description = $this->row[0]['description'];
 
+            $this->db->closeConnection($openConn);
 
         }catch(PDOException $e){
             echo "Error: " . $e->getMessage();
         }
-        $this->db->closeConnection($openConn);
+
     }
 
 
@@ -70,10 +73,12 @@ class Books{
             return $fetchedFileName = basename($fetchedLink);
             echo $fetchedFileName;
 
+            $this->db->closeConnection($openConn);
+
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        $this->db->closeConnection($openConn);
+
     }
 
     public function updateBookValues($passedId, $passedPictureName){
@@ -92,10 +97,12 @@ class Books{
 
             $statement->execute();
 
+            $this->db->closeConnection($openConn);
+
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        $this->db->closeConnection($openConn);
+
     }
 
     public function getFetchedFileName(){
@@ -112,11 +119,11 @@ class Books{
             $openConn->exec($sql1);
             $openConn->exec($sql2);
 
+            $this->model->closeConnection($openConn);
+
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-
-        $this->model->closeConnection($openConn);
     }
 
     public function getAllBooks(){
@@ -130,13 +137,13 @@ class Books{
             while($row = $selectBooks->fetch(PDO::FETCH_ASSOC)){
                 $books[] = $row;
             }
-
             return $books;
+
+            $this->db->closeConnection($openConn);
             
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        $this->db->closeConnection($openConn);
     }
 
     public function getAllCategories(){
@@ -150,14 +157,13 @@ class Books{
             while($row = $selectCategories->fetch(PDO::FETCH_ASSOC)){
                 $categories[] = $row;
             }
-
             return $categories;
-
+            $this->db->closeConnection($openConn);
 
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        $this->db->closeConnection($openConn);
+        
     }
 
     public function getSearchedBooks($searchKey){
@@ -173,12 +179,11 @@ class Books{
             }
 
             return $searched_books;
-
+            $this->db->closeConnection($openConn);
 
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        $this->db->closeConnection($openConn);
     }
 
     public function insertNewFavorite($current_user_id, $current_book_id){
@@ -188,13 +193,11 @@ class Books{
 
             $sql = "INSERT INTO favorites (id_user, id_book) VALUES($current_user_id, $current_book_id)";
             $statement = $openConn->prepare($sql);
-                $statement->execute();
-
+            $statement->execute();
+            $this->db->closeConnection($openConn);
         }catch(PDOException $e){
             echo $sql . "<br>" . $e->getMessage();
-        }
-        $this->db->closeConnection($openConn);
-        
+        } 
     }
 
     public function checkDuplicateFavorite($current_user_id, $current_book_id){
@@ -204,6 +207,7 @@ class Books{
             $sql_verif = "SELECT * FROM favorites WHERE id_user = '$current_user_id' AND id_book = '$current_book_id'";
             $statement_ver = $openConn->prepare($sql_verif);
             $statement_ver->execute();
+            $this->db->closeConnection($openConn);
 
             if($statement_ver->rowCount() > 0){
                 return false;
@@ -214,7 +218,7 @@ class Books{
         }catch(PDOException $e){
             echo $sql . "<br>" . $e->getMessage();
         }
-        $this->db->closeConnection($openConn);
+
     }
 
     public function getFilteredBooks($booksFiltered){
@@ -230,11 +234,11 @@ class Books{
                 $filtered_books[] = $row;
             }
             return $filtered_books;
+            $this->db->closeConnection($openConn);
 
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        $this->db->closeConnection($openConn);
     }
 
     public function getUserFavorites($current_user_id){
@@ -256,13 +260,11 @@ class Books{
             }
 
             return $user_favorite_books;
-
+            $this->db->closeConnection($openConn);
 
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-        $this->db->closeConnection($openConn);
-
     }
 
     public function deleteUserFavorite($current_del_book){
@@ -272,11 +274,11 @@ class Books{
             $sql1 = "DELETE FROM favorites WHERE id_book =$current_del_book";
             
             $openConn->exec($sql1);
+            $this->db->closeConnection($openConn);
     
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-
-        $this->db->closeConnection($openConn);
     }
+
 }

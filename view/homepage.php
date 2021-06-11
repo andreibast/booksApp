@@ -1,20 +1,18 @@
 <?php  
-    include("templates/layout.css.php"); 
-
     // require_once(__DIR__.'/../controller/User.php');
 
     // require "index.php";
-    ob_start();
+    // ob_start();
 
-    if(isset($_SESSION['curent_username'])){
-        require_once 'lib/Database.php';
-        require_once "model/Books.php";
-        require_once 'controller/Book.php';
+    // if(isset($_SESSION['curent_username'])){
+    //     require_once 'lib/Database.php';
+    //     require_once "model/Books.php";
+    //     require_once 'controller/Book.php';
     
-        $db_books = new Database();
-        $book_model = new Books($db_books);
-        $book_controller = new Book($book_model); 
-    }
+    //     $db_books = new Database();
+    //     $book_model = new Books($db_books);
+    //     $book_controller = new Book($book_model); 
+    // }
        
 
      
@@ -45,10 +43,8 @@
         }else{
             include("subpages/mainpage.php");
         };
-        ob_end_flush();
+        // ob_end_flush();
     ?>
 
     <!-- FOOTER--><?php include "components/footer.php"; ?>
 </div>
-
-<?php include("templates/layout.js.php"); ?>

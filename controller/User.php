@@ -13,6 +13,27 @@ class User{
         session_start();
     }
 
+    public function index(){
+        require 'view/subpages/login.php';
+    }
+
+    public function csrf_login(){
+        return @$csrf_login = hash_hmac('sha256','This is LoginUser.php', $_SESSION['key_login']);
+    }
+
+    public function csrf_register(){
+        return @$csrf_register = hash_hmac('sha256','This is RegisterUser.php', $_SESSION['key']);
+    }
+
+    public function home(){
+        require 'view/homepage.php';
+    }
+
+    public function registerPage(){
+        require 'view/subpages/registration.php';
+    }
+    
+
     public function login_token(){
         $_SESSION['id'] = 264;
 
@@ -23,13 +44,13 @@ class User{
 
         if(!empty($_SESSION['key_login'])){
 
-            $_SESSION['expire_login'] = $_SESSION['start_login'] + (240); //session time set to 4min
+            $_SESSION['expire_login'] = $_SESSION['start_login'] + (540); //session time given (in s)
             $now = time();
             if($now > $_SESSION['expire_login']){
                 unset( $_SESSION['key_login']);
                 unset( $_SESSION['expire_login']);
 
-                header("location: http://localhost/books.andreibasturescu/"); //redirect to login page after session expiration
+                header("location: http://localhost/books.andreibasturescu/index.php/login"); //redirect to login page after session expiration
             }
         }
     }
@@ -46,20 +67,21 @@ class User{
                         $_SESSION['msg_type_login'] = "danger";
                     }elseif($this->model->verifyUser($_POST['login_email'], $password_grabbed) == true){
                         $_SESSION['msg_type_login'] = "success";
-                        require __DIR__."/../view/homepage.php";
                         header("Location: http://localhost/books.andreibasturescu/index.php/home");
-                        // header("location: view/homepage.php");
                     }else{
                         $_SESSION['message_login'] = "Incorrect email/password!";
                         $_SESSION['msg_type_login'] = "danger";
+                        header("Location: http://localhost/books.andreibasturescu/index.php/login");
                     }
             }else{
                 $_SESSION['message_login'] = "The token has expired! Please refrish the page and try again!";
                 $_SESSION['msg_type_login'] = "warning";
+                header("Location: http://localhost/books.andreibasturescu/index.php/login");
             }
         }else{
             $_SESSION['message_login'] = "Please complete all the fields!";
             $_SESSION['msg_type_login'] = "danger";
+            header("Location: http://localhost/books.andreibasturescu/index.php/login");
         }
     }
 
@@ -80,7 +102,7 @@ class User{
                 unset( $_SESSION['key']);
                 unset( $_SESSION['expire']);
     
-                header("location: ../../view/register.php"); //redirect to login page after session expiration
+                header("location: http://localhost/books.andreibasturescu/index.php/login"); //redirect to login page after session expiration
             }
         }
     }
@@ -125,48 +147,13 @@ class User{
             $_SESSION['msg_type_register'] = "danger";  
         }
         
-        header("location: ../view/registration.php");
+        header("location: http://localhost/books.andreibasturescu/index.php/register");
     }
 
     public function logout(){
         unset($_SESSION['curent_username']);
         session_destroy(); 
-        header("location: ../");
+        header("location: http://localhost/books.andreibasturescu/index.php/login");
     }
 
 }
-
-//========================================================================
-//LOGIN USER
-//========================SESSION SECTION=================================
-// $loginUser = new User();  
-// $loginUser->sessionStart(0, '/', 'localhost', false, false);
-// $loginUser->login_token();
-
-// $csrf_login = hash_hmac('sha256','This is LoginUser.php', $_SESSION['key_login']);
-
-//========================INTERACTION SECTION=============================
-// if(isset($_POST['login_user'])){   
-//     $loginUser->login($csrf_login);
-// }
-
-// if(isset($_POST['user_logout'])){
-//     $loginUser->logout();
-// }
-// unset($loginUser); //destroy the object from memory
-
-
-//====================================================================
-//REGISTER USER
-//========================SESSION SECTION=============================
-// $registerUser = new User();
-// $registerUser->register_token();
-
-// $csrf = hash_hmac('sha256','This is RegisterUser.php', $_SESSION['key']);
-
-//========================INTERACTION SECTION=========================
-// if(isset($_POST['new_user'])){
-//     $registerUser->register($csrf);
-// }
-
-// unset($registerUser); //destroy the object from memory

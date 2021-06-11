@@ -1,7 +1,5 @@
-<?php include("../templates/layout.css.php"); ?>
-<?php  require_once(__DIR__.'/../../controller/User.php');  ?>
 <div class="background-img login-height">
-    <img src="../../public/images/main/bffb7a55-1455-4a54-9b5a-028fb7e9f17a_200x200.png">
+    <img src="../public/images/main/bffb7a55-1455-4a54-9b5a-028fb7e9f17a_200x200.png">
     <div class="login-form">
         <h1 class="mb-4">Registration Form</h1>
 
@@ -17,7 +15,7 @@
                 </div>
         <?php endif ?>
         
-        <form action="../controller/User.php" method="POST" >
+        <form action="register" method="POST" >
             <div class="form-group">
                 <input type="text" class="form-control" name="new_surname" placeholder="Surname" >
             </div>
@@ -31,11 +29,10 @@
                 <input type="password" class="form-control" name="new_password_check" placeholder="Repeat Password">
             </div>
 
-            <input type="hidden" name="token" value="<?php echo $csrf; ?>">
+            <input type="hidden" name="token" value="<?php echo $this->csrf_register(); ?>">
             <button type="submit" name="new_user" class="btn btn-danger mb-4 col-md-12">Create new account</button>
         </form>
 
-        <label><a href="../../">Go Back To Login Page</a></label>
+        <label><a href="login">Go Back To Login Page</a></label>
     </div>
 </div>
-<?php include("../templates/layout.js.php"); ?>
